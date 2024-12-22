@@ -49,95 +49,95 @@ deleteBtn.addEventListener("click", () => {
 const games = [
     {
         name: "15PUZZLE",
-        src: "/games/15PUZZLE"
+        src: "/15PUZZLE"
     },
     {
         name: "BLINKY",
-        src: "/games/BLINKY"
+        src: "/BLINKY"
     },
     {
         name: "BLITZ",
-        src: "/games/BLITZ"
+        src: "/BLITZ"
     },
     {
         name: "BRIX",
-        src: "/games/BRIX"
+        src: "/BRIX"
     },
     {
         name: "CONNECT4",
-        src: "/games/CONNECT4"
+        src: "/CONNECT4"
     },
     {
         name: "GUESS",
-        src: "/games/GUESS"
+        src: "/GUESS"
     },
     {
         name: "HIDDEN",
-        src: "/games/HIDDEN"
+        src: "/HIDDEN"
     },
     {
         name: "INVADERS",
-        src: "/games/INVADERS"
+        src: "/INVADERS"
     },
     {
         name: "KALEID",
-        src: "/games/KALEID"
+        src: "/KALEID"
     },
     {
         name: "MAZE",
-        src: "/games/MAZE"
+        src: "/MAZE"
     },
     {
         name: "MERLIN",
-        src: "/games/MERLIN"
+        src: "/MERLIN"
     },
     {
         name: "MISSILE",
-        src: "/games/MISSILE"
+        src: "/MISSILE"
     },
     {
         name: "PONG",
-        src: "/games/PONG"
+        src: "/PONG"
     },
     {
         name: "PONG2",
-        src: "/games/PONG2"
+        src: "/PONG2"
     },
     {
         name: "PUZZLE",
-        src: "/games/PUZZLE"
+        src: "/PUZZLE"
     },
     {
         name: "SYZYGY",
-        src: "/games/SYZYGY"
+        src: "/SYZYGY"
     },
     {
         name: "TANK",
-        src: "/games/TANK"
+        src: "/TANK"
     },
     {
         name: "TETRIS",
-        src: "/games/TETRIS"
+        src: "/TETRIS"
     },
     {
         name: "TICTAC",
-        src: "/games/TICTAC"
+        src: "/TICTAC"
     },
     {
         name: "UFO",
-        src: "/games/UFO"
+        src: "/UFO"
     },
     {
         name: "VBRIX",
-        src: "/games/VBRIX"
+        src: "/VBRIX"
     },
     {
         name: "VERS",
-        src: "/games/VERS"
+        src: "/VERS"
     },
     {
         name: "WIPEOFF",
-        src: "/games/WIPEOFF"
+        src: "/WIPEOFF"
     },
 ]
 
@@ -183,7 +183,7 @@ async function run() {
     dropdownItems.forEach((item, i) => {
         item.addEventListener("click", () => {
             // Fetch the file content
-            fetch("https://github.com/Truthixify/chip8/tree/main/docs" + games[i].src)
+            fetch(games[i].src)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Error fetching file: ${response.statusText}`)
