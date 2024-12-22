@@ -6,13 +6,113 @@
         <title>Chip-8 Emulator</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+        <link rel='stylesheet' type='text/css' media='screen' href='bulma.min.css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
-        <h1>My Chip-8 Emulator</h1>
-        <label for="fileinput">Upload a Chip-8 game: </label>
-        <input type="file" id="fileinput" autocomplete="off"/>
-        <br/>
-        <canvas id="canvas">If you see this message, then your browser doesn't support HTML5</canvas>
+        <header>
+            <h1 class="is-size-4 has-text-centered is-uppercase">Chip-8 Emulator</h1>
+        </header>
+        <main class="container">
+            <div class="columns is-multiline is-mobile">
+                <div class="column is-11 dropdown" id="dropdown">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>SELECT GAME</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content" id="dropdown-content">
+                      </div>
+                    </div>
+                </div>
+                <button class="column is-1 info">
+                    <span class="icon is-small">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i>
+                      </span>
+                </button>
+                <article class="message column is-12 is-primary is-hidden">
+                    <div class="message-header">
+                      <p>Key Mapping</p>
+                      <button class="delete hide-msg"></button>
+                    </div>
+                    <div class="message-body key-map">
+                        <div class=" fixed-grid has-4-cols">
+                            Keypad
+                            <div class="keypad grid">
+                                <button class="cell" data-key="1">1</button>
+                                <button class="cell" data-key="2">2</button>
+                                <button class="cell" data-key="3">3</button>
+                                <button class="cell" data-key="4">4</button>
+                                <button class="cell" data-key="Q">Q</button>
+                                <button class="cell" data-key="W">W</button>
+                                <button class="cell" data-key="E">E</button>
+                                <button class="cell" data-key="R">R</button>
+                                <button class="cell" data-key="A">A</button>
+                                <button class="cell" data-key="S">S</button>
+                                <button class="cell" data-key="D">D</button>
+                                <button class="cell" data-key="F">F</button>
+                                <button class="cell" data-key="Z">Z</button>
+                                <button class="cell" data-key="X">X</button>
+                                <button class="cell" data-key="C">C</button>
+                                <button class="cell" data-key="V">V</button>
+                            </div>
+                        </div>
+                        <div class="key-map-arrow">
+                            <span class="icon is-small">
+                                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                              </span>
+                        </div>
+                        <div class=" fixed-grid has-4-cols">
+                            Chip8
+                            <div class="keypad grid">
+                                <button class="cell" data-key="1">1</button>
+                                <button class="cell" data-key="2">2</button>
+                                <button class="cell" data-key="3">3</button>
+                                <button class="cell" data-key="C">C</button>
+                                <button class="cell" data-key="4">4</button>
+                                <button class="cell" data-key="5">5</button>
+                                <button class="cell" data-key="6">6</button>
+                                <button class="cell" data-key="D">D</button>
+                                <button class="cell" data-key="7">7</button>
+                                <button class="cell" data-key="8">8</button>
+                                <button class="cell" data-key="9">9</button>
+                                <button class="cell" data-key="E">E</button>
+                                <button class="cell" data-key="A">A</button>
+                                <button class="cell" data-key="0">0</button>
+                                <button class="cell" data-key="B">B</button>
+                                <button class="cell" data-key="F">F</button>
+                            </div>
+                    </div>
+                </article>
+            </div>
+            <div class="canvas-holder">
+                <canvas id="canvas">If you see this message, then your browser doesn't support HTML5</canvas>
+            </div>
+        </main>
+        <footer class="fixed-grid has-4-cols is-size-7">
+            <div class="keypad grid">
+                <button class="cell" data-key="1">1</button>
+                <button class="cell" data-key="2">2</button>
+                <button class="cell" data-key="3">3</button>
+                <button class="cell" data-key="4">C</button>
+                <button class="cell" data-key="Q">4</button>
+                <button class="cell" data-key="W">5</button>
+                <button class="cell" data-key="E">6</button>
+                <button class="cell" data-key="R">D</button>
+                <button class="cell" data-key="A">7</button>
+                <button class="cell" data-key="S">8</button>
+                <button class="cell" data-key="D">9</button>
+                <button class="cell" data-key="F">E</button>
+                <button class="cell" data-key="Z">A</button>
+                <button class="cell has-background-danger" data-key="X">0</button>
+                <button class="cell" data-key="B">C</button>
+                <button class="cell" data-key="F">V</button>
+            </div>
+        </footer>
     </body>
     <script type="module" src='index.js'></script>
 </html>

@@ -5,9 +5,49 @@
 }
 
 body {
-    padding: 10vh 10%;
+    padding: 0 5% !important;
 }
 
 body * {
-    margin: 20px 0;
+    margin: 15px 0;
+}
+
+.canvas-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    width: 100%;
+}
+
+footer .keypad button {
+    height: 25px;
+    background-color: #333;
+    font-weight: bold;
+}
+
+.key-map {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.key-map > div {
+    width: 30%;
+}
+
+.key-map-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.key-map > div > div button {
+    background-color: hsl(171, 100%, 29%);
+}
+
+@media screen and (max-width: 640px) {
+
 }

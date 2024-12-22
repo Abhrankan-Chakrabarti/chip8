@@ -1,56 +1,212 @@
 import init, * as wasm from "./wasm.js"
 
-const WIDTH = 64
-const HEIGHT = 32
-const SCALE = 10
+// Original dimensions
+const originalWidth = 64
+const originalHeight = 32
+
+// Target dimensions (window size)
+const targetWidth = window.innerWidth * 0.9
+const targetHeight = window.innerHeight
+
+// Calculate scale factors for both width and height
+const scaleX = targetWidth / originalWidth
+const scaleY = targetHeight / originalHeight
+
+// Use the smaller scale factor to maintain aspect ratio
+const SCALE = Math.min(scaleX, scaleY)
+
+// Calculate new dimensions
+const WIDTH = originalWidth * SCALE
+const HEIGHT = originalHeight * SCALE
+
 const TICKS_PER_FRAME = 10
 let anim_frame = 0
 
 const canvas = document.getElementById("canvas")
-canvas.width = WIDTH * SCALE
-canvas.height = HEIGHT * SCALE
+canvas.width = WIDTH
+canvas.height = HEIGHT
 
 const ctx = canvas.getContext("2d")
 ctx.fillStyle = "black"
-ctx.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE)
+ctx.fillRect(0, 0, WIDTH, HEIGHT)
 
 const input = document.getElementById("fileinput")
+const dropdown = document.getElementById("dropdown")
+const dropdownContent = document.getElementById("dropdown-content")
+const infoBtn = document.querySelector(".info")
+const deleteBtn = document.querySelector(".delete")
+const msg = document.querySelector(".message")
+const keypadCells = document.querySelectorAll("footer .cell")
+
+infoBtn.addEventListener("click", () => {
+    msg.classList.toggle("is-hidden")
+})
+
+deleteBtn.addEventListener("click", () => {
+    msg.classList.add("is-hidden")
+})
+
+const games = [
+    {
+        name: "15PUZZLE",
+        src: "/games/15PUZZLE"
+    },
+    {
+        name: "BLINKY",
+        src: "/games/BLINKY"
+    },
+    {
+        name: "BLITZ",
+        src: "/games/BLITZ"
+    },
+    {
+        name: "BRIX",
+        src: "/games/BRIX"
+    },
+    {
+        name: "CONNECT4",
+        src: "/games/CONNECT4"
+    },
+    {
+        name: "GUESS",
+        src: "/games/GUESS"
+    },
+    {
+        name: "HIDDEN",
+        src: "/games/HIDDEN"
+    },
+    {
+        name: "INVADERS",
+        src: "/games/INVADERS"
+    },
+    {
+        name: "KALEID",
+        src: "/games/KALEID"
+    },
+    {
+        name: "MAZE",
+        src: "/games/MAZE"
+    },
+    {
+        name: "MERLIN",
+        src: "/games/MERLIN"
+    },
+    {
+        name: "MISSILE",
+        src: "/games/MISSILE"
+    },
+    {
+        name: "PONG",
+        src: "/games/PONG"
+    },
+    {
+        name: "PONG2",
+        src: "/games/PONG2"
+    },
+    {
+        name: "PUZZLE",
+        src: "/games/PUZZLE"
+    },
+    {
+        name: "SYZYGY",
+        src: "/games/SYZYGY"
+    },
+    {
+        name: "TANK",
+        src: "/games/TANK"
+    },
+    {
+        name: "TETRIS",
+        src: "/games/TETRIS"
+    },
+    {
+        name: "TICTAC",
+        src: "/games/TICTAC"
+    },
+    {
+        name: "UFO",
+        src: "/games/UFO"
+    },
+    {
+        name: "VBRIX",
+        src: "/games/VBRIX"
+    },
+    {
+        name: "VERS",
+        src: "/games/VERS"
+    },
+    {
+        name: "WIPEOFF",
+        src: "/games/WIPEOFF"
+    },
+]
 
 async function run() {
     await init()
     let chip8 = new wasm.EmulatorWasm()
 
-    document.addEventListener("keydown", function(event) {
+    dropdown.addEventListener("click", () => {
+        dropdown.classList.toggle("is-active")
+    })
+
+    document.addEventListener("keydown", (event) => {
         chip8.keypress(event, true)
     })
 
-    document.addEventListener("keyup", function(event) {
+    document.addEventListener("keyup", (event) => {
         chip8.keypress(event, false)
     })
 
-    input.addEventListener("change", function(event) {
-        // Stop previous game from rendering, if one exists
-        if (anim_frame != 0) {
-            window.cancelAnimationFrame(anim_frame)
-        }
+    keypadCells.forEach(keypad => {
+        keypad.addEventListener("click", (event) => {
+            const key = event.target.dataset.key
+            const keyDownEvent = new KeyboardEvent("keydown", { key });
+            document.dispatchEvent(keyDownEvent)
+            setTimeout(() => {
+                const keyUpEvent = new KeyboardEvent("keyup", { key });
+                document.dispatchEvent(keyUpEvent)
+            }, 100);
+        })
+    })
 
-        let file = event.target.files[0]
-        if (!file) {
-            alert("Failed to read file")
-            return
-        }
+    games.forEach(game => {
+        const content = document.createElement("a")
+        content.textContent = game.name
+        content.classList.add("dropdown-item")
+        content.href = "#"
+    
+        dropdownContent.appendChild(content)
+    })
 
-        // Load in game as Uint8Array, send to .wasm, start main loop
-        let fr = new FileReader()
-        fr.onload = function(e) {
-            let buffer = fr.result
-            const rom = new Uint8Array(buffer)
-            chip8.reset()
-            chip8.load_game(rom)
-            mainloop(chip8)
-        }
-        fr.readAsArrayBuffer(file)
-    }, false)
+    const dropdownItems = document.querySelectorAll(".dropdown-item")
+
+    dropdownItems.forEach((item, i) => {
+        item.addEventListener("click", () => {
+            // Fetch the file content
+            fetch(games[i].src)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching file: ${response.statusText}`)
+                }
+
+                return response.arrayBuffer()
+            })
+            .then(buffer => {
+                // Stop previous game from rendering, if one exists
+                if (anim_frame != 0) {
+                    window.cancelAnimationFrame(anim_frame)
+                }
+
+                const rom = new Uint8Array(buffer)
+                chip8.reset()
+                chip8.load_game(rom)
+                mainloop(chip8)
+            })
+            .catch(error => {
+                console.error('Error reading file:', error)
+            })
+        })
+    })
 }
 run().catch(console.error)
 
@@ -63,7 +219,7 @@ function mainloop(chip8) {
 
     // Clear the canvas before drawing
     ctx.fillStyle = "black"
-    ctx.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE)
+    ctx.fillRect(0, 0, WIDTH, HEIGHT)
 
     // Set the draw color back to white before we render our frame
     ctx.fillStyle = "white"
